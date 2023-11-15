@@ -18,7 +18,7 @@ Backend https://api.mms0709.nomoredomainsrocks.ru.
 
 1. Клонируйте проект на свой компьютер:
 
-git clone 
+git clone https://github.com/MariaMMS1984/movies-explorer-frontend.git
 
 2. Установите зависимости:
 
