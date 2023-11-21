@@ -42,11 +42,11 @@
 }
 
 .card__button_inactive {
-    background: #222222 url(../../images/save8d_inactive.png) center no-repeat;
+    background: #222222 url(../../images/save8d_inactive.svg) center no-repeat;
 }
 
 .card__button_active {
-    background: #222222 url(../../images/save8_active.png) center no-repeat;
+    background: #222222 url(../../images/save8_active.svg) center no-repeat;
 }
 
 .card__button_delete {
@@ -55,7 +55,7 @@
 }
 
 .card__button_delete:hover {
-    background: #222222 url(../../images/d8_delete.png) center no-repeat;
+    background: #222222 url(../../images/d8_delete.svg) center no-repeat;
 }
 
 .card__duration {

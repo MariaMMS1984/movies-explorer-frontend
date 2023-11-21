@@ -54,7 +54,7 @@ const Profile = ({ onSignOut, openPopup }) => {
                 <div className="profile__inputs">
                     <p className="profile__text">Имя</p>
                     <div className="profile__content profile__content_type_name">
-                        <input className="profile__input" value={name} onChange={changeName} />
+                        <input className="profile__input" minLength="2" value={name} onChange={changeName} />
                     </div>
                     <div className="profile__content profile__content_type_email">
                         <input className="profile__input" value={email} onChange={changeEmail} />

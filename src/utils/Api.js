@@ -22,7 +22,7 @@ class Api {
             .then(res => { return this._answerServer(res); })
     }
 
-    addNewMovie({ name, link }) {
+    addNewMovie(movie) {
         const token = localStorage.getItem("jwt");
         return fetch(`${this._link}movies`, {
             headers: {
@@ -30,10 +30,7 @@ class Api {
                 'Content-Type': 'application/json',
             },
             method: 'POST',
-            body: JSON.stringify({
-                name: name,
-                link: link
-            })
+            body: JSON.stringify(movie)
         })
             .then(res => { return this._answerServer(res); })
     }

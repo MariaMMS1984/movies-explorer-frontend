@@ -10,7 +10,7 @@
     height: 43px;
     outline: none;
     border: none;
-    background: transparent url('../../images/icon__menu.png') center center / cover no-repeat;
+    background: transparent url('../../images/icon__COLOR_icon-main.svg') center / cover no-repeat;
     transition: opacity .2s linear;
 }
 
@@ -48,7 +48,7 @@
     height: 22px;
     outline: none;
     border: none;
-    background: transparent url('../../images/Group.png') center / 32px no-repeat;
+    background: transparent url('../../images/Group.svg') center / 32px no-repeat;
     align-self: flex-end;
     transition: opacity .2s linear;
 }
@@ -85,7 +85,7 @@
     margin: 0;
     border-radius: 20px;
     font-size: 14px;
-    background: transparent url('../../images/icon__COLOR_icon-main.png') right / 11px no-repeat;
+    background: transparent url('../../images/icon__accaunt.svg') right / 11px no-repeat;
 }
 
 @media screen and (max-width: 800px) {

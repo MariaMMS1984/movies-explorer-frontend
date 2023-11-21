@@ -30,7 +30,7 @@
 .portfolio__link {
     display: flex;
     justify-content: space-between;
-    background: transparent url(../../images/icon__portfolio.png) right center / 20px no-repeat;
+    background: transparent url(../../images/student.svg) right center / 20px no-repeat;
     color: #FFFFFF;
     font-size: 30px;
     font-weight: 400;

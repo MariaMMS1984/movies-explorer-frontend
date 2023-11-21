@@ -81,6 +81,7 @@ function App() {
         localStorage.removeItem('savedFilms');
         localStorage.removeItem('savedFilmsTumbler');
         localStorage.removeItem('savedFilmsInputSearch');
+        navigate("/");
     }
 
     function openPopup(textError) {

@@ -8,7 +8,7 @@ const Page404 = () => {
                 <h1 className="notfound__title">404</h1>
                 <p className="notfound__text">Страница не найдена</p>
             </div>
-            <Link to="/" className="notfound__link">Назад</Link>
+            <Link to={-1} className="notfound__link">Назад</Link>
         </div>
     );
 };

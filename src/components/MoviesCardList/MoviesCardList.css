@@ -1,6 +1,6 @@
 .cards {
     margin: 0 70px 0;
-    padding: 10px 0 50px;
+    padding: 0 0 50px;
     background-color: #202020;
 }
 
@@ -69,8 +69,8 @@
     }
 
     .cards__list {
-        padding: 40px 0 0;
         gap: 18px 20px;
+        padding-top: 40px;
     }
 
     .cards__container {

@@ -1,7 +1,7 @@
 import '../Form/Form.css';
 import { useState } from 'react';
 import { Link } from 'react-router-dom';
-import logo from '../../images/header__logo.png';
+import logo from '../../images/header_logo.svg';
 
 function Login({ onLogin }) {
     const [inputValues, setInputValues] = useState({});
