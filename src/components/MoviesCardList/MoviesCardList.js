@@ -23,7 +23,7 @@ const MoviesCardList = ({ films, savedMoviesToggle, filmsSaved, filmsRemains, ha
             )}
 
 
-            <div className="cards__button-container">
+            <div className="cards__container">
                 <button className="cards__button" type="button" name="more" onClick={handleMore}>Ещё</button>
             </div>
 
