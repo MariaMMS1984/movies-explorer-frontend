@@ -17,16 +17,19 @@ const Movies = ({ openPopup }) => {
     const [filmsShowed, setFilmsShowed] = useState(null);
     const [filmsWithTumbler, setFilmsWithTumbler] = useState([]);
     const [filmsShowedWithTumbler, setFilmsShowedWithTumbler] = useState([]);
+    const [isLoading, setIsLoading] = useState(false); // состояние загрузки фильмов из базы
 
     useEffect(() => {
         setstepCount(getstepCount());
         const handlerResize = () => setstepCount(getstepCount());
-        window.addEventListener('resize', handlerResize);
+        window.addEventListener('open', handlerResize);
 
         return () => {
-            window.removeEventListener('resize', handlerResize);
+            window.removeEventListener('open', handlerResize);
         };
     }, []);
+
+
 
     function getstepCount() {
         let countCards;
@@ -73,7 +76,6 @@ const Movies = ({ openPopup }) => {
             let filterData = data.filter(({ nameRU }) => nameRU.toLowerCase().includes(inputSearch.toLowerCase()));
             localStorage.setItem('films', JSON.stringify(filterData));
             localStorage.setItem('filmsInputSearch', inputSearch);
-
 
             setFilms(filterData);
             setFilmsWithTumbler(filterData);
@@ -176,13 +178,15 @@ const Movies = ({ openPopup }) => {
     }, [openPopup]);
 
     return (
-        <div className="movies">
-            <SearchForm handleGetMovies={handleGetMovies} filmsTumbler={filmsTumbler} filmsInputSearch={filmsInputSearch} handleGetMoviesTumbler={handleGetMoviesTumbler} />
-            {errorText && <div className="movies__text-error">{errorText}</div>}
-            {!preloader && !errorText && films !== null && filmsSaved !== null && filmsShowed !== null && (
-                <MoviesCardList handleMore={handleMore} filmsRemains={films} films={filmsShowed} savedMoviesToggle={savedMoviesToggle} filmsSaved={filmsSaved} />
-            )}
-        </div>
+        <main>
+            <div className="movies">
+                <SearchForm handleGetMovies={handleGetMovies} filmsTumbler={filmsTumbler} filmsInputSearch={filmsInputSearch} handleGetMoviesTumbler={handleGetMoviesTumbler} />
+                {errorText && <div className="movies__text-error">{errorText}</div>}
+                {!preloader && !errorText && films !== null && filmsSaved !== null && filmsShowed !== null && (
+                    <MoviesCardList handleMore={handleMore} filmsRemains={films} films={filmsShowed} savedMoviesToggle={savedMoviesToggle} filmsSaved={filmsSaved} />
+                )}
+            </div>
+        </main>
     );
 };
 

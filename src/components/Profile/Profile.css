@@ -149,7 +149,7 @@
 @media all and (max-width: 450px) {
     .profile__form {
         max-width: 260px;
-        padding: 79px 0 0;
+        padding: 70px 0 0;
     }
 
     .profile__greeting {
@@ -157,7 +157,7 @@
     }
 
     .profile__button {
-        /* margin: 380px 0 14px; */
+        margin: 379px 0 16px;
         font-size: 12px;
     }
 

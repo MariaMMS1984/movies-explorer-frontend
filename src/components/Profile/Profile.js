@@ -48,27 +48,29 @@ const Profile = ({ onSignOut, openPopup }) => {
     }
 
     return (
-        <section className="profile">
-            <form className="profile__form" onSubmit={onSubmit}>
-                <h3 className="profile__greeting">Привет, {name}!</h3>
-                <div className="profile__inputs">
-                    <p className="profile__text">Имя</p>
-                    <div className="profile__content profile__content_type_name">
-                        <input className="profile__input" minLength="2" value={name} onChange={changeName} />
+        <main>
+            <section className="profile">
+                <form className="profile__form" onSubmit={onSubmit}>
+                    <h1 className="profile__greeting">Привет, {name}!</h1>
+                    <div className="profile__inputs">
+                        <p className="profile__text">Имя</p>
+                        <div className="profile__content profile__content_type_name">
+                            <input className="profile__input" minLength="2" maxLength="12" value={name} onChange={changeName} />
+                        </div>
+                        <div className="profile__content profile__content_type_email">
+                            <input className="profile__input" value={email} onChange={changeEmail} />
+                        </div>
+                        <p className="profile__text">E-mail</p>
                     </div>
-                    <div className="profile__content profile__content_type_email">
-                        <input className="profile__input" value={email} onChange={changeEmail} />
-                    </div>
-                    <p className="profile__text">E-mail</p>
-                </div>
-                <button className="profile__button" disabled={!isVisibleButton}>
-                    Редактировать
-                </button>
-                <button className="profile__link" type="button" onClick={onSignOut}>
-                    Выйти из аккаунта
-                </button>
-            </form>
-        </section>
+                    <button className="profile__button" disabled={!isVisibleButton}>
+                        Редактировать
+                    </button>
+                    <button className="profile__link" type="button" onClick={onSignOut}>
+                        Выйти из аккаунта
+                    </button>
+                </form>
+            </section>
+        </main>
     );
 };
 

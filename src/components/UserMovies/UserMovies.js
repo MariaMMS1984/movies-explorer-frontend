@@ -107,7 +107,7 @@ const UserMovies = ({ openPopup }) => {
 
     async function savedMoviesToggle(film, favorite) {
         if (favorite) {
-            const filmdata = {
+            const objFilm = {
                 image: 'https://api.nomoreparties.co' + film.image.url,
                 trailerLink: film.trailerLink,
                 thumbnail: 'https://api.nomoreparties.co' + film.image.url,
@@ -121,7 +121,7 @@ const UserMovies = ({ openPopup }) => {
                 nameEN: film.nameEN,
             };
             try {
-                await api.addNewMovie(filmdata);
+                await api.addNewMovie(objFilm);
                 const newSaved = await api.getMovies();
                 setFilmsSaved(newSaved);
             } catch (err) {
@@ -170,13 +170,15 @@ const UserMovies = ({ openPopup }) => {
     }, [openPopup]);
 
     return (
-        <div className="usermovies">
-            <SearchForm handleGetMovies={handleGetMovies} filmsTumbler={filmsTumbler} filmsInputSearch={filmsInputSearch} />
-            {errorText && <div className="usermovies__text-error">{errorText}</div>}
-            {!preloader && !errorText && films !== null && (
-                <MoviesCardList filmsRemains={[]} savedMoviesToggle={savedMoviesToggle} films={filmsShowed} />
-            )}
-        </div>
+        <main>
+            <div className="usermovies">
+                <SearchForm handleGetMovies={handleGetMovies} filmsTumbler={filmsTumbler} filmsInputSearch={filmsInputSearch} />
+                {errorText && <div className="usermovies__text-error">{errorText}</div>}
+                {!preloader && !errorText && films !== null && (
+                    <MoviesCardList filmsRemains={[]} savedMoviesToggle={savedMoviesToggle} films={filmsShowed} />
+                )}
+            </div>
+        </main>
     );
 };
 

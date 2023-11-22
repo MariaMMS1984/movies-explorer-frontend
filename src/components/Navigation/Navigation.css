@@ -27,7 +27,7 @@
 
 .navigation__list {
     display: flex;
-    padding: 0;
+    padding: 15px 0 0 0;
     list-style: none;
 }
 
@@ -71,6 +71,10 @@
     transition: opacity .2s linear;
 }
 
+.navigation__link_active {
+    font-weight: 500;
+}
+
 .navigation__link:hover {
     opacity: .6;
     cursor: pointer;
@@ -85,7 +89,7 @@
     margin: 0;
     border-radius: 20px;
     font-size: 14px;
-    background: transparent url('../../images/icon__accaunt.svg') right / 11px no-repeat;
+    background: transparent url('../../images/icon__accaunt.svg') right / 12px no-repeat;
 }
 
 @media screen and (max-width: 800px) {
@@ -165,4 +169,5 @@
     .navigation__item {
         margin: 0 0 20px;
     }
+
 }

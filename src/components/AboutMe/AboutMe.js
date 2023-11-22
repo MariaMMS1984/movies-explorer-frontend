@@ -15,9 +15,9 @@ const AboutMe = () => {
                         В настоящее время мечтаю лично приложить руку к разработке новых и усовершенствованию существующих сайтов, приложений, сервисов.
                     </p>
 
-                    <ul className="about-me__links">
-                        <li><a className="about-me__link" href="https://github.com/MariaMMS1984" target="_blank" rel="noreferrer">Github</a></li>
-                    </ul>
+                    <div className="about-me__links">
+                        <a className="about-me__link" href="https://github.com/MariaMMS1984" target="_blank" rel="noreferrer">Github</a>
+                    </div>
                 </div>
 
                 <img src={avatar} alt="about-me" className="about-me__image" />

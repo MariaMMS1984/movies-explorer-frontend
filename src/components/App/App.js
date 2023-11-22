@@ -16,6 +16,7 @@ import Page404 from '../Page404/Page404';
 import Main from '../Main/Main';
 import Footer from '../Footer/Footer';
 import InfotoolTip from '../InfotoolTip/InfoToolTip';
+import moviesApi from '../../utils/MoviesApi';
 
 function App() {
     const navigate = useNavigate();
@@ -25,10 +26,33 @@ function App() {
     const [popupTitle, setPopupTitle] = useState('');
     const [isOpenPopup, setIsOpenPopup] = useState(false);
     const [currentUser, setCurrentUser] = useState({});
+    const [films, setFilms] = useState(null);
+    const [errorText, setErrorText] = useState('');
+    const [filmsWithTumbler, setFilmsWithTumbler] = useState([]);
 
     useEffect(() => {
         getUserData();
     }, []);
+
+    async function getMovies() {
+        try {
+            const data = await moviesApi.getAllMovies();
+            let filterData = data.filter(({ nameRU }) => nameRU.toLowerCase());
+            localStorage.setItem('films', JSON.stringify(filterData));
+
+            setFilms(filterData);
+            setFilmsWithTumbler(filterData);
+        } catch (err) {
+            setErrorText(
+                'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'
+            );
+
+            setFilms([]);
+            localStorage.removeItem('films');
+            localStorage.removeItem('filmsTumbler');
+            localStorage.removeItem('filmsInputSearch');
+        }
+    }
 
     function getUserData() {
         api.getUserData()
@@ -64,6 +88,7 @@ function App() {
             if (token) {
                 auth.saveToken(token);
                 setLoggedIn(true);
+                getMovies();
                 navigate("/movies");
             }
         }).catch(() => {

@@ -76,7 +76,7 @@
 }
 
 .form__field:focus {
-    outline: none;
+    outline: 1px solid #8B8B8B;
 }
 
 .form__field_color-error {
@@ -98,7 +98,20 @@
 }
 
 .form__button {
-    margin: 68px 0 17px;
+    margin: 179px 0 17px;
+    padding: 13px 0 15px;
+    color: #FFFFFF;
+    border: none;
+    border-radius: 3px;
+    background-color: #4285F4;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 17px;
+    transition: opacity .2s linear;
+}
+
+.form__reg-button {
+    margin: 69px 0 17px;
     padding: 13px 0 15px;
     color: #FFFFFF;
     border: none;
@@ -119,6 +132,11 @@
 }
 
 .form__button:hover {
+    opacity: .8;
+    cursor: pointer;
+}
+
+.form__reg-button:hover {
     opacity: .8;
     cursor: pointer;
 }
@@ -151,5 +169,13 @@
 
     .form__title {
         margin: 47px 0 40px 0;
+    }
+
+    .form__button {
+        margin-top: 267px;
+    }
+
+    .form__reg-button {
+        margin-top: 157px;
     }
 }
