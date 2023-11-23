@@ -97,6 +97,10 @@
         display: flex;
     }
 
+    .navigation__link_active {
+        border-bottom: 2px solid rgba(255, 255, 255, 0.918);
+    }
+
     .navigation__container {
         display: none;
     }

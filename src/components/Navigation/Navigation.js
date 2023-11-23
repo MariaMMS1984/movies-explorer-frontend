@@ -4,6 +4,12 @@ import { Link, NavLink } from 'react-router-dom';
 
 const Navigation = () => {
     const [showItems, setShowItems] = useState(false);
+    const [isActive, setIsActive] = useState(false);
+
+    const handleClick = event => {
+        // 👇️ toggle isActive state on click
+        setIsActive(current => !current);
+    };
 
     const toggleMenu = () => setShowItems(!showItems);
 
@@ -19,10 +25,10 @@ const Navigation = () => {
                                 <Link to="/" className="navigation__link">Главная</Link>
                             </li>
                             <li className="navigation__item">
-                                <NavLink to="/movies" className="navigation__link" activeclassname="navigation__link_active">Фильмы</NavLink>
+                                <NavLink to="/movies" className="navigation__link" activeclassname="navigation__link_active" onClick={handleClick}>Фильмы</NavLink>
                             </li>
                             <li className="navigation__item">
-                                <NavLink to="/usermovies" className="navigation__link" activeclassname="navigation__link_active">Сохранённые фильмы</NavLink>
+                                <NavLink to="/usermovies" className="navigation__link" activeclassname="navigation__link_active" onClick={handleClick}>Сохранённые фильмы</NavLink>
                             </li>
                         </ul>
                     </div>
