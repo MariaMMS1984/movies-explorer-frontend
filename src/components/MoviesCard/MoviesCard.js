@@ -39,7 +39,7 @@ const MoviesCard = ({ film, savedMoviesToggle, filmsSaved }) => {
   return (
     <li className="card">
       <a className="card__image-content" href={pathname === '/usermovies' ? film.trailer : film.trailerLink} target="_blank" rel="noreferrer">
-        <img className="card__image" src={pathname === '/usermovies' ? `${film.image}` : `https://api.nomoreparties.co${film.image.url}`} alt={film.nameRU}></img>
+        <img className="card__image" src={`https://api.nomoreparties.co${film.image.url}`} alt={film.nameRU}></img>
       </a>
       <div className="card__element">
         <p className="card__title">{film.nameRU}</p>

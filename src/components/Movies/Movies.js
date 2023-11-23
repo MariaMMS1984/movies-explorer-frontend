@@ -137,6 +137,7 @@ const Movies = ({ openPopup }) => {
             }
         } else {
             try {
+                console.log(film._id);
                 await api.deleteMovie(film._id);
                 const newSaved = await api.getMovies();
                 setFilmsSaved(newSaved);
