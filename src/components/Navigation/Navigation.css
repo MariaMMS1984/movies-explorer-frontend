@@ -1,5 +1,6 @@
 .navigation {
-    width: 50%;
+    width: 100%;
+    padding-left: 29vw;
 }
 
 .navigation__button-menu {
@@ -38,6 +39,8 @@
 .navigation__list-container {
     display: flex;
     flex-direction: column;
+    margin: 0;
+    padding-bottom: 26px;
 }
 
 .navigation__button-close {
@@ -135,8 +138,9 @@
 
     .navigation__list {
         flex-direction: column;
-        margin: 110px auto 0;
+        margin: 105px auto 0;
         align-items: center;
+        padding-top: 0;
     }
 
     .navigation__item {
