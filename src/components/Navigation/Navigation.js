@@ -1,16 +1,10 @@
 import './Navigation.css';
 import { useState } from 'react';
-import { Link, NavLink } from 'react-router-dom';
+import { Link, NavLink, useLocation } from 'react-router-dom';
 
 const Navigation = () => {
     const [showItems, setShowItems] = useState(false);
-    const [isActive, setIsActive] = useState(false);
-
-    const handleClick = event => {
-        // 👇️ toggle isActive state on click
-        setIsActive(current => !current);
-    };
-
+    const { pathname } = useLocation();
     const toggleMenu = () => setShowItems(!showItems);
 
     return (
@@ -22,13 +16,13 @@ const Navigation = () => {
                         <button className="navigation__button-close" type="button" onClick={toggleMenu}></button>
                         <ul className="navigation__list">
                             <li className="navigation__item navigation__item_type_main">
-                                <Link to="/" className="navigation__link">Главная</Link>
+                                <Link to="/" className={`navigation__link ${pathname !== '/' ? '' : 'navigation__link_active'}`}>Главная</Link>
                             </li>
                             <li className="navigation__item">
-                                <NavLink to="/movies" className="navigation__link" activeclassname="navigation__link_active" onClick={handleClick}>Фильмы</NavLink>
+                                <NavLink to="/movies" className={`navigation__link ${pathname !== '/movies' ? '' : 'navigation__link_active'}`}>Фильмы</NavLink>
                             </li>
                             <li className="navigation__item">
-                                <NavLink to="/usermovies" className="navigation__link" activeclassname="navigation__link_active" onClick={handleClick}>Сохранённые фильмы</NavLink>
+                                <NavLink to="/usermovies" className={`navigation__link ${pathname !== '/usermovies' ? '' : 'navigation__link_active'}`}>Сохранённые фильмы</NavLink>
                             </li>
                         </ul>
                     </div>

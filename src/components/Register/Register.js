@@ -35,14 +35,14 @@ function Register({ onRegister }) {
                     <form className="form__inputs" onSubmit={formSubmit}>
                         <div className="form__items">
                             <label className="form__item">
-                                <p className="form__item-text">Имя</p>
-                                <input className="form__field" height="46px" name="name" placeholder="Введите имя" value={inputValues.name || ''} onChange={inputChange} required
+                                <span className="form__item-text">Имя</span>
+                                <input className="form__field" name="name" placeholder="Введите имя" value={inputValues.name || ''} onChange={inputChange} required
                                     maxLength="12" minLength="2" />
-                                <p className="form__error">Что-то пошло не так...</p>
+                                <span className="form__error">Что-то пошло не так...</span>
                             </label>
 
                             <label className="form__item">
-                                <p className="form__item-text">E-mail</p>
+                                <span className="form__item-text">E-mail</span>
                                 <input
                                     className={`form__field ${errors.email ? 'form__field_color-error' : ''}`}
                                     name="email"
@@ -52,11 +52,11 @@ function Register({ onRegister }) {
                                     onChange={inputChange}
                                     required
                                 />
-                                <p className={`form__error ${errors.email ? 'form__error-show' : ''}`}>{errors.email}</p>
+                                <span className={`form__error ${errors.email ? 'form__error-show' : ''}`}>{errors.email}</span>
                             </label>
 
                             <label className="form__item">
-                                <p className="form__item-text">Пароль</p>
+                                <span className="form__item-text">Пароль</span>
                                 <input
                                     className={`form__field ${errors.password ? 'form__field_color-error' : ''}`}
                                     name="password"
@@ -68,15 +68,15 @@ function Register({ onRegister }) {
                                     onChange={inputChange}
                                     required
                                 />
-                                <p className={`form__error ${errors.password ? 'form__error-show' : ''}`}>{errors.password}</p>
+                                <span className={`form__error ${errors.password ? 'form__error-show' : ''}`}>{errors.password}</span>
                             </label>
                         </div>
                         <button className={`form__reg-button ${isValid ? "" : "form__button_disabled"}`} type="submit" disabled={!isValid ? true : ''}>Зарегистрироваться</button>
                     </form>
-                    <p className="form__text">
+                    <span className="form__text">
                         Уже зарегистрированы?
                         <Link to="/signin" className="form__link">Войти</Link>
-                    </p>
+                    </span>
                 </div>
             </section>
         </main>

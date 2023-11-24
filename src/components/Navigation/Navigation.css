@@ -140,7 +140,7 @@
         flex-direction: column;
         margin: 105px auto 0;
         align-items: center;
-        padding-top: 0;
+        padding-top: 15px 0 0 0;
     }
 
     .navigation__item {

@@ -35,7 +35,7 @@ function Login({ onLogin }) {
                     <form className="form__inputs" onSubmit={formSubmit}>
                         <div className="form__items">
                             <label className="form__item">
-                                <p className="form__item-text">E-mail</p>
+                                <span className="form__item-text">E-mail</span>
                                 <input
                                     className={`form__field ${errors.email ? 'form__field_color-error' : ''}`}
                                     name="email"
@@ -45,11 +45,11 @@ function Login({ onLogin }) {
                                     onChange={inputChange}
                                     required
                                 />
-                                <p className={`form__error ${errors.email ? 'form__error-show' : ''}`}>{errors.email}</p>
+                                <span className={`form__error ${errors.email ? 'form__error-show' : ''}`}>{errors.email}</span>
                             </label>
 
                             <label className="form__item">
-                                <p className="form__item-text">Пароль</p>
+                                <span className="form__item-text">Пароль</span>
                                 <input
                                     className={`form__field ${errors.password ? 'form__field_color-error' : ''}`}
                                     name="password"
@@ -61,7 +61,7 @@ function Login({ onLogin }) {
                                     onChange={inputChange}
                                     required
                                 />
-                                <p className={`form__error ${errors.password ? 'form__error-show' : ''}`}>{errors.password}</p>
+                                <span className={`form__error ${errors.password ? 'form__error-show' : ''}`}>{errors.password}</span>
                             </label>
                         </div>
                         <button className={`form__button ${isValid ? "" : "form__button_disabled"}`} type="submit" disabled={!isValid ? true : ''}>Войти</button>
