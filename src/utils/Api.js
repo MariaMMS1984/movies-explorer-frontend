@@ -1,10 +1,9 @@
 
-import { token, url } from './constants';
+import { url } from './constants';
 
 class Api {
-    constructor({ link, headers }) {
+    constructor({ link }) {
         this._link = link;
-        this._headers = headers;
     }
 
     _answerServer(res) {
@@ -15,92 +14,95 @@ class Api {
         }
     }
 
-    getInitialCards() {
-        return fetch(`${this._link}cards`, {
-            headers: this._headers
-
+    getMovies() {
+        const token = localStorage.getItem("jwt");
+        return fetch(`${this._link}movies`, {
+            headers: { authorization: `Bearer ${token}` },
         })
             .then(res => { return this._answerServer(res); })
     }
 
-    addNewCard({ name, link }) {
-        return fetch(`${this._link}cards`, {
-            headers: this._headers,
+    addNewMovie(movie) {
+        const token = localStorage.getItem("jwt");
+        return fetch(`${this._link}movies`, {
+            headers: {
+                authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
             method: 'POST',
-            body: JSON.stringify({
-                name: name,
-                link: link
-            })
+            body: JSON.stringify(movie)
         })
             .then(res => { return this._answerServer(res); })
     }
 
-    deleteCard(cardId) {
-        return fetch(`${this._link}cards/${cardId}`, {
-            headers: this._headers,
+    deleteMovie(movieId) {
+        const token = localStorage.getItem("jwt");
+        return fetch(`${this._link}movies/${movieId}`, {
+            headers: {
+                authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
             method: 'DELETE',
         })
             .then(res => { return this._answerServer(res); })
     }
 
     getUserData() {
+        const token = localStorage.getItem("jwt");
         return fetch(`${this._link}users/me`, {
-            headers: this._headers
+            headers: {
+                authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
 
         })
             .then(res => { return this._answerServer(res); })
     }
 
-    sendUserData({ name, about }) {
+    sendUserData({ name, email }) {
+        const token = localStorage.getItem("jwt");
         return fetch(`${this._link}users/me`, {
-            headers: this._headers,
+            headers: {
+                authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
             method: 'PATCH',
-            body: JSON.stringify({ name, about })
+            body: JSON.stringify({ name, email })
         })
             .then(res => { return this._answerServer(res); })
     }
 
-    sendAvatarData(avatarLink) {
-        return fetch(`${this._link}users/me/avatar`, {
-            headers: this._headers,
-            method: 'PATCH',
-            body: JSON.stringify({ avatar: avatarLink.avatar })
+    registerUser({ name, email, password }) {
+        const token = localStorage.getItem("jwt");
+        return fetch(`${this._link}signup`, {
+            method: 'POST',
+            headers: {
+                authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ name, email, password }),
         })
             .then(res => { return this._answerServer(res); })
     }
 
-    putCardLike(cardId) {
-        return fetch(`${this._link}cards/${cardId}/likes`, {
-            headers: this._headers,
-            method: 'PUT',
+    loginUser({ email, password }) {
+        const token = localStorage.getItem("jwt");
+        return fetch(`${this._link}signin`, {
+            method: 'POST',
+            headers: {
+                authorization: `Bearer ${token}`,
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({ email, password }),
         })
             .then(res => { return this._answerServer(res); })
     }
 
-    deleteCardLike(cardId) {
-        return fetch(`${this._link}cards/${cardId}/likes`, {
-            headers: this._headers,
-            method: 'DELETE',
-        })
-            .then(res => { return this._answerServer(res); })
-    }
-
-    toggleLike(cardId, isLiked) {
-        if (isLiked) {
-            return this.deleteCardLike(cardId);
-        } else {
-            return this.putCardLike(cardId);
-        }
-    }
 }
 
 
 const api = new Api({
     link: url,
-    headers: {
-        authorization: token,
-        'Content-Type': 'application/json',
-    }
 });
 
 
