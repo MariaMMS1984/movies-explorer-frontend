@@ -17,7 +17,6 @@ const Movies = ({ openPopup }) => {
     const [filmsShowed, setFilmsShowed] = useState(null);
     const [filmsWithTumbler, setFilmsWithTumbler] = useState([]);
     const [filmsShowedWithTumbler, setFilmsShowedWithTumbler] = useState([]);
-    const [isLoading, setIsLoading] = useState(false); // состояние загрузки фильмов из базы
 
     useEffect(() => {
         setstepCount(getstepCount());
@@ -73,12 +72,16 @@ const Movies = ({ openPopup }) => {
 
         try {
             const data = await moviesApi.getAllMovies();
-            let filterData = data.filter(({ nameRU }) => nameRU.toLowerCase().includes(inputSearch.toLowerCase()));
+            const filterData = data.filter(function ({ nameRU }) {
+                return nameRU.toLowerCase().includes(inputSearch);
+            });
+            console.log(filterData.length);
             localStorage.setItem('films', JSON.stringify(filterData));
             localStorage.setItem('filmsInputSearch', inputSearch);
             const spliceData = filterData.splice(0, stepCount[0]);
             setFilmsShowed(spliceData);
             setFilms(filterData);
+            console.log(films.length);
             setFilmsShowedWithTumbler(spliceData);
             setFilmsWithTumbler(filterData);
         } catch (err) {
