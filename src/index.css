@@ -1,2 +1,9 @@
 @import url(./vendor/normalize.css);
 @import url(./vendor/fonts/fonts.css);
+
+body {
+    margin: 0;
+    font-family: 'Inter', Arial, sans-serif;
+    text-rendering: optimizeLegibility;
+    background-color: #202020;
+}
