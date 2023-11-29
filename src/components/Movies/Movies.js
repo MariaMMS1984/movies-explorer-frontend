@@ -72,16 +72,16 @@ const Movies = ({ openPopup }) => {
 
         try {
             const data = await moviesApi.getAllMovies();
-            const filterData = data.filter(function ({ nameRU }) {
+            let filterData = data.filter(function ({ nameRU }) {
                 return nameRU.toLowerCase().includes(inputSearch);
             });
-            console.log(filterData.length);
             localStorage.setItem('films', JSON.stringify(filterData));
             localStorage.setItem('filmsInputSearch', inputSearch);
+
+            setFilms(filterData);
+
             const spliceData = filterData.splice(0, stepCount[0]);
             setFilmsShowed(spliceData);
-            setFilms(filterData);
-            console.log(films.length);
             setFilmsShowedWithTumbler(spliceData);
             setFilmsWithTumbler(filterData);
         } catch (err) {
@@ -138,13 +138,11 @@ const Movies = ({ openPopup }) => {
                 const newSaved = await api.getMovies();
                 setFilmsSaved(newSaved);
                 localStorage.setItem('savedFilms', JSON.stringify(newSaved));
-                console.log(newSaved);
             } catch (err) {
                 openPopup('Во время добавления фильма произошла ошибка.');
             }
         } else {
             try {
-                console.log(film._id);
                 await api.deleteMovie(film._id);
                 const newSaved = await api.getMovies();
                 setFilmsSaved(newSaved);

@@ -22,7 +22,7 @@ const MoviesCardList = ({ films, savedMoviesToggle, filmsSaved, filmsRemains, ha
                 <div className="cards__text">Ничего не найдено</div>
             )}
 
-            {filmsRemains.length >= 0 && pathname !== '/usermovies' && (
+            {filmsRemains.length > 0 && pathname !== '/usermovies' && (
                 <div className="cards__container">
                     <button className="cards__button" type="button" name="more" onClick={handleMore}>Ещё</button>
                 </div>

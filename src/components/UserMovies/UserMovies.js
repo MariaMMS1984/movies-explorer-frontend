@@ -22,6 +22,7 @@ const UserMovies = ({ openPopup }) => {
 
         try {
             const data = films;
+
             let filterData = data.filter(({ nameRU }) => nameRU.toLowerCase().includes(inputSearch.toLowerCase()));
 
             if (tumbler) filterData = filterData.filter(({ duration }) => duration <= 40);
@@ -66,14 +67,10 @@ const UserMovies = ({ openPopup }) => {
     }
 
     useEffect(() => {
-        userMoviesShow();
-    }, []);
-
-    async function userMoviesShow() {
         const localStorageFilms = localStorage.getItem('savedFilms');
-        console.log(localStorageFilms);
         if (localStorageFilms) {
             setFilms(JSON.parse(localStorageFilms));
+            setFilmsShowed(JSON.parse(localStorageFilms));
             const localStorageFilmsTumbler = localStorage.getItem('savedFilmsTumbler');
             const localStorageFilmsInputSearch = localStorage.getItem('savedFilmsInputSearch');
 
@@ -92,7 +89,8 @@ const UserMovies = ({ openPopup }) => {
                 openPopup(`Ошибка сервера ${err}`);
             }
         }
-    }
+
+    }, [openPopup]);
 
     return (
         <div className="usermovies">
