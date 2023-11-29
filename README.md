@@ -14,7 +14,7 @@
 
 IP 51.250.94.118
 
-Frontend http://mms0709.nomoredomainsrocks.ru
+Frontend http://mms0709.nomoredomainsmonster.ru.
 
 Backend http://api.mms0709.nomoredomainsrocks.ru. (был https, пока сдавала бек, случайно удалила данные сертификата, запустила перевыпуск, это займет 5-7 дней, поэтому пришлось пока использовать http:).
 
