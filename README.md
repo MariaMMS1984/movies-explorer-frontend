@@ -6,15 +6,17 @@
 
 Адрес репозитория: https://github.com/MariaMMS1984/movies-explorer-frontend.
 
+Ссылка на пул-реквест: https://github.com/MariaMMS1984/movies-explorer-frontend/pull/2.
+
 Репозиторий для фронтенд-части приложения с интерфейсом на React.
 
 Макет: https://www.figma.com/file/6FMWkB94wE7KTkcCgUXtnC/Дипломный-проект?type=design&node-id=1-12061&mode=design&t=PFdatuObGTm5lwal-0
 
 IP 51.250.94.118
 
-Frontend https://mms0709.nomoredomainsrocks.ru
+Frontend http://mms0709.nomoredomainsrocks.ru
 
-Backend https://api.mms0709.nomoredomainsrocks.ru.
+Backend http://api.mms0709.nomoredomainsrocks.ru. (был https, пока сдавала бек, случайно удалила данные сертификата, запустила перевыпуск, это займет 5-7 дней, поэтому пришлось пока использовать http:).
 
 ## Инструкции для развертывания:
 
