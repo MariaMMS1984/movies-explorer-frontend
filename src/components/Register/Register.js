@@ -13,6 +13,14 @@ function Register({ onRegister }) {
         const name = target.name;
         const value = target.value;
 
+        if (name === 'email') {
+            if (!value.match(/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/)) {
+                target.setCustomValidity('Некорректый адрес почты');
+            } else {
+                target.setCustomValidity('');
+            }
+        }
+
         setInputValues({ ...inputValues, [name]: value });
         setErrors({ ...errors, [name]: target.validationMessage });
         setIsValid(target.closest('form').checkValidity());
@@ -51,6 +59,8 @@ function Register({ onRegister }) {
                                     value={inputValues.email || ''}
                                     onChange={inputChange}
                                     required
+                                    v-pattern="/^[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,4}$/
+Источник: https://ardoni-moscow.ru/realizaciya-validacii-na-frontende-i-bekende-s-ispolzovaniem-vuejs"
                                 />
                                 <span className={`form__error ${errors.email ? 'form__error-show' : ''}`}>{errors.email}</span>
                             </label>

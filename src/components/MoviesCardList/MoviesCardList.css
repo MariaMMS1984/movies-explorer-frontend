@@ -7,8 +7,8 @@
 .cards__list {
     display: grid;
     align-items: center;
-    grid-template-columns: repeat(auto-fit, minmax(270px, 1fr));
-    gap: 32px 20px;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 32px 15px;
     margin: 0;
     padding: 70px 0 0;
     box-sizing: border-box;

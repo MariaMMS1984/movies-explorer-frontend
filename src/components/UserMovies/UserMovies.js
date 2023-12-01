@@ -12,22 +12,27 @@ const UserMovies = ({ openPopup }) => {
     const [errorText, setErrorText] = useState('');
     const [filmsTumbler, setFilmsTumbler] = useState(false);
     const [filmsInputSearch, setFilmsInputSearch] = useState('');
-    const [filmsShowed, setFilmsShowed] = useState(
-        JSON.parse(localStorage.getItem('savedFilms')) || []
-    ); // берем фильмы из базы
+    const [filmsShowed, setFilmsShowed] = useState([]);
+    const [filmsSaved, setFilmsSaved] = useState(null);
+    const [inputSearch, setInputSearch] = useState('');
+    const [filmsWithTumbler, setFilmsWithTumbler] = useState([]);
+    const [filmsShowedWithTumbler, setFilmsShowedWithTumbler] = useState([]);
+    const inputData = localStorage.getItem("savedFilmsInputSearch");
+    console.log(inputData);
 
     async function handleGetMovies(inputSearch, tumbler) {
         setErrorText('');
         setPreloader(true);
 
         try {
-            const data = films;
+            const savedMovies = JSON.parse(localStorage.getItem('savedFilms')); // кладем в переменную все фильмы
 
-            let filterData = data.filter(({ nameRU }) => nameRU.toLowerCase().includes(inputSearch.toLowerCase()));
+            let filterData = savedMovies.filter(({ nameRU }) => nameRU.toLowerCase().includes(inputSearch.toLowerCase()));
 
             if (tumbler) filterData = filterData.filter(({ duration }) => duration <= 40);
 
             setFilmsShowed(filterData);
+            console.log(inputSearch.length);
 
             if (inputSearch) {
                 localStorage.setItem('savedFilms', JSON.stringify(filterData));
@@ -53,13 +58,35 @@ const UserMovies = ({ openPopup }) => {
         }
     }
 
+    async function handleGetMoviesTumbler(tumbler) {
+        let filterShowed = [];
+        let filterDat = [];
+
+        if (tumbler) {
+            setFilmsShowedWithTumbler(filmsShowed);
+            setFilmsWithTumbler(films);
+            filterShowed = filmsShowed.filter(({ duration }) => duration <= 40);
+            filterDat = films.filter(({ duration }) => duration <= 40);
+        } else {
+            filterShowed = filmsShowedWithTumbler;
+            filterDat = filmsWithTumbler;
+        }
+
+        setFilmsShowed(filterShowed);
+        setFilms(filterDat);
+    }
+
+
     async function savedMoviesToggle(film, favorite) {
         if (!favorite) {
             try {
                 await api.deleteMovie(film._id);
                 const newFilms = await api.getMovies();
-                setFilmsShowed(newFilms);
+                setFilmsSaved(newFilms);
+                localStorage.setItem('savedFilms', JSON.stringify(newFilms));
                 setFilms(newFilms);
+                if (inputData.length > 0) { setFilmsShowed(''); localStorage.removeItem('savedFilmsInputSearch'); }  // так не срабатывает, не пойму, как правильно
+                else { setFilmsShowed(newFilms) }
             } catch (err) {
                 openPopup('Во время удаления фильма произошла ошибка.');
             }
@@ -67,34 +94,28 @@ const UserMovies = ({ openPopup }) => {
     }
 
     useEffect(() => {
-        const localStorageFilms = localStorage.getItem('savedFilms');
-        if (localStorageFilms) {
-            setFilms(JSON.parse(localStorageFilms));
-            setFilmsShowed(JSON.parse(localStorageFilms));
-            const localStorageFilmsTumbler = localStorage.getItem('savedFilmsTumbler');
-            const localStorageFilmsInputSearch = localStorage.getItem('savedFilmsInputSearch');
-
-            if (localStorageFilmsTumbler) {
-                setFilmsTumbler(localStorageFilmsTumbler === 'true');
-            }
-            if (localStorageFilmsInputSearch) {
-                setFilmsInputSearch(localStorageFilmsInputSearch);
-            }
-        } else {
-            try {
-                const data = api.getMovies();
-                setFilms(data);
-                setFilmsShowed(data);
-            } catch (err) {
-                openPopup(`Ошибка сервера ${err}`);
-            }
-        }
-
+        api
+            .getMovies()
+            .then((savedMovies) => {
+                const user = localStorage.getItem('userId');
+                const userMovies = savedMovies// из всех фильмов выбираем с подходщим id и сохраняем в переменную
+                console.log(userMovies);
+                localStorage.setItem('savedFilms', JSON.stringify(userMovies)); // сохраняем их в хранилище
+                setFilms(userMovies);
+                setFilmsSaved(userMovies);
+                setFilmsShowed(userMovies);
+                if (savedMovies.length === 0) {
+                    setErrorText('Вы еще ничего не добавили в избранное');
+                }
+            })
+            .catch((err) => {
+                setErrorText((err));
+            });
     }, [openPopup]);
 
     return (
         <div className="usermovies">
-            <SearchForm handleGetMovies={handleGetMovies} filmsTumbler={filmsTumbler} filmsInputSearch={filmsInputSearch} />
+            <SearchForm handleGetMovies={handleGetMovies} filmsTumbler={filmsTumbler} filmsInputSearch={filmsInputSearch} handleGetMoviesTumbler={handleGetMoviesTumbler} />
             {preloader && <Preloader />}
             {errorText && <div className="usermovies__text-error">{errorText}</div>}
             {!preloader && !errorText && films !== null && (

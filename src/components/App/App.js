@@ -27,8 +27,6 @@ function App() {
     const [isOpenPopup, setIsOpenPopup] = useState(false);
     const [currentUser, setCurrentUser] = useState({});
     const [films, setFilms] = useState(null);
-    const [errorText, setErrorText] = useState('');
-    const [filmsWithTumbler, setFilmsWithTumbler] = useState([]);
 
     useEffect(() => {
         getUserData();
@@ -47,7 +45,6 @@ function App() {
                 setIsLoading(false);
             });
     }
-
 
     function register({ name, email, password }) {
         api.registerUser({ name, email, password })
@@ -69,6 +66,7 @@ function App() {
                 auth.saveToken(token);
                 setLoggedIn(true);
                 getUserData();
+                localStorage.setItem('userId', currentUser._id);
                 navigate("/movies");
             }
         }).catch(() => {

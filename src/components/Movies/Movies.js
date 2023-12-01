@@ -17,26 +17,27 @@ const Movies = ({ openPopup }) => {
     const [filmsShowed, setFilmsShowed] = useState(null);
     const [filmsWithTumbler, setFilmsWithTumbler] = useState([]);
     const [filmsShowedWithTumbler, setFilmsShowedWithTumbler] = useState([]);
+    const queryData = JSON.parse(localStorage.getItem("filmsTumbler"));
+    console.log(queryData);
 
     useEffect(() => {
         setstepCount(getstepCount());
         const handlerResize = () => setstepCount(getstepCount());
-        window.addEventListener('open', handlerResize);
+        window.addEventListener('resize', handlerResize);
 
         return () => {
-            window.removeEventListener('open', handlerResize);
+            window.removeEventListener('resize', handlerResize);
         };
     }, []);
-
 
 
     function getstepCount() {
         let countCards;
         const clientWidth = document.documentElement.clientWidth;
         const stepCountConfig = {
-            '1200': [12, 4],
-            '900': [9, 3],
-            '768': [8, 2],
+            '1279': [16, 4],
+            '994': [9, 3],
+            '764': [8, 2],
             '240': [5, 2],
         };
 
@@ -53,6 +54,7 @@ const Movies = ({ openPopup }) => {
 
     function handleMore() {
         const spliceFilms = films;
+        console.log(spliceFilms);
         const newFilmsShowed = filmsShowed.concat(spliceFilms.splice(0, stepCount[1]));
         setFilmsShowed(newFilmsShowed);
         setFilms(spliceFilms);
@@ -72,16 +74,14 @@ const Movies = ({ openPopup }) => {
 
         try {
             const data = await moviesApi.getAllMovies();
-            let filterData = data.filter(function ({ nameRU }) {
-                return nameRU.toLowerCase().includes(inputSearch);
-            });
+            let filterData = data.filter(({ nameRU }) => nameRU.toLowerCase().includes(inputSearch.toLowerCase()));
+
             localStorage.setItem('films', JSON.stringify(filterData));
             localStorage.setItem('filmsInputSearch', inputSearch);
 
-            setFilms(filterData);
-
             const spliceData = filterData.splice(0, stepCount[0]);
             setFilmsShowed(spliceData);
+            setFilms(filterData);
             setFilmsShowedWithTumbler(spliceData);
             setFilmsWithTumbler(filterData);
         } catch (err) {
@@ -97,6 +97,7 @@ const Movies = ({ openPopup }) => {
             setPreloader(false);
         }
     }
+
 
     async function handleGetMoviesTumbler(tumbler) {
         let filterDataShowed = [];
@@ -132,6 +133,7 @@ const Movies = ({ openPopup }) => {
                 description: film.description,
                 nameRU: film.nameRU,
                 nameEN: film.nameEN,
+                owner: film.owner,
             };
             try {
                 await api.addNewMovie(filmdata);

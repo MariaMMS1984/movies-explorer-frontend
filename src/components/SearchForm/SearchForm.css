@@ -37,8 +37,8 @@
 }
 
 .search__button {
-    width: 86px;
-    height: 34px;
+    width: 89px;
+    height: 40px;
     background: transparent url('../../images/find.svg') center center / cover no-repeat;
     transition: opacity .2s linear;
 }
@@ -84,6 +84,7 @@
     border-radius: 16px;
     transition: .6s;
     transform: scale(-1, -1);
+    background-color: #FFFFFF;
 }
 
 .search__slider::before {
@@ -95,7 +96,8 @@
     bottom: 1px;
     border: 1px solid #3DDC84;
     border-radius: 50%;
-    background-color: #FFFFFF;
+    background-color: #3DDC84;
+
 }
 
 .search__checkbox:checked+.search__slider {
@@ -104,6 +106,7 @@
 
 .search__checkbox:checked+.search__slider::before {
     transform: translateX(16px);
+    background-color: #FFFFFF;
 }
 
 @media screen and (max-width: 800px) {
