@@ -19,6 +19,7 @@ const Movies = ({ openPopup }) => {
     const [filmsShowed, setFilmsShowed] = useState(null);
     const [filmsWithTumbler, setFilmsWithTumbler] = useState([]);
     const [filmsShowedWithTumbler, setFilmsShowedWithTumbler] = useState([]);
+    const [movies, setMovies] = useState([]);
 
     useEffect(() => {
         setstepCount(getstepCount());
@@ -35,10 +36,12 @@ const Movies = ({ openPopup }) => {
         let countCards;
         const clientWidth = document.documentElement.clientWidth;
         const stepCountConfig = {
-            '1284': [12, 4],
+            '1278': [16, 4],
+            '1262': [16, 4],
             '1004': [12, 3],
-            '764': [8, 2],
-            '500': [8, 2],
+            '989': [12, 3],
+            '767': [8, 2],
+            '748': [8, 2],
             '240': [5, 2],
         };
 
@@ -75,27 +78,24 @@ const Movies = ({ openPopup }) => {
 
         try {
             const data = await moviesApi.getAllMovies();
-            let filterData = data.filter(({ nameRU }) => nameRU.toLowerCase().includes(inputSearch.toLowerCase()));
-            let filterDataShowed = data.filter(({ nameRU }) => nameRU.toLowerCase().includes(inputSearch.toLowerCase()));
+
+            localStorage.setItem('films', JSON.stringify(films));
+
+            const filterData = searchFilter(data, inputSearch, tumbler);
+            const filterDataShowed = searchFilter(data, inputSearch, tumbler);
 
             localStorage.setItem('filmsInputSearch', inputSearch);
 
-            localStorage.setItem('films', JSON.stringify(filterData));
-
-            const filterShort = filterDataShowed.filter(({ duration }) => duration <= 40);
             const spliceData = filterData.splice(0, stepCount[0]);
-            const tumblerData = filterShort.splice(0, stepCount[0]);
-            setFilms(tumblerData);
+            localStorage.setItem('movies', JSON.stringify(filterDataShowed));
 
-            if (tumbler) {
-                setFilmsShowed(tumblerData);
-                setFilmsShowedWithTumbler(spliceData);
-                setFilmsWithTumbler(filterData);
-            } else {
-                setFilmsShowed(spliceData);
-                setFilmsShowedWithTumbler(spliceData);
-                setFilmsWithTumbler(filterData);
-            }
+            setFilms(filterData);
+            setFilmsShowed(spliceData);
+            setFilmsShowedWithTumbler(spliceData);
+            setFilmsWithTumbler(filterData);
+            setMovies(filterData);
+
+            console.log(movies);
 
         } catch (err) {
             setErrorText(
@@ -156,7 +156,8 @@ const Movies = ({ openPopup }) => {
                 openPopup(`Ошибка сервера ${err}`);
             });
 
-        const localStorageFilms = localStorage.getItem('films');
+        const localStorageFilms = localStorage.getItem('movies');
+        console.log(localStorageFilms);
 
         if (localStorageFilms) {
             const filterData = JSON.parse(localStorageFilms);
@@ -166,7 +167,7 @@ const Movies = ({ openPopup }) => {
             setPreloader(false);
         }
 
-        const localStorageFilmsTumbler = localStorage.getItem('filmsTumbler');
+        const localStorageFilmsTumbler = localStorage.getItem('filmsShowed');
         const localStorageFilmsInputSearch = localStorage.getItem('filmsInputSearch');
 
         if (localStorageFilmsTumbler) {

@@ -27,6 +27,7 @@ const UserMovies = ({ openPopup }) => {
 
         try {
             const savedMovies = JSON.parse(localStorage.getItem('savedFilms')); // кладем в переменную все фильмы
+            console.log(savedMovies);
 
             let filterData = savedMovies.filter(({ nameRU }) => nameRU.toLowerCase().includes(inputSearch.toLowerCase()));
 
@@ -97,6 +98,9 @@ const UserMovies = ({ openPopup }) => {
                 localStorage.setItem('savedFilms', JSON.stringify(newFilms));
                 setFilms(newFilms);
                 console.log(inputData.length);
+                const newMovies = newFilms.filter(({ nameRU }) => nameRU.toLowerCase().includes(inputSearch.toLowerCase()));
+                setFilmsShowed(newMovies);
+
                 if (inputData.length > 0) {
                     if (checkbox) {
                         const newMovie = newFilms.filter(({ duration }) => duration <= 40);
@@ -104,8 +108,8 @@ const UserMovies = ({ openPopup }) => {
                         setFilmsShowed(newMovies);
                     }
                     else {
-                        const newMovie = newFilms.filter(({ nameRU }) => nameRU.toLowerCase().includes(inputSearch.toLowerCase()));
-                        setFilmsShowed(newMovie);
+                        const newFilter = newFilms.filter(({ nameRU }) => nameRU.toLowerCase().includes(inputSearch.toLowerCase()));
+                        setFilmsShowed(newFilter);
                     }
                 }
 
