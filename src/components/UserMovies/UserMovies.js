@@ -1,6 +1,6 @@
 import './UserMovies.css';
 import React, { useEffect, useState } from 'react';
-import SearchForm from '../SearchForm/SearchForm';
+import SearchFormUser from '../SearchForm/SearchFormuser';
 import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import api from '../../utils/Api';
 import Preloader from '../Preloader/Preloader';
@@ -18,9 +18,10 @@ const UserMovies = ({ openPopup }) => {
     const [filmsWithTumbler, setFilmsWithTumbler] = useState([]);
     const [filmsShowedWithTumbler, setFilmsShowedWithTumbler] = useState([]);
     const inputData = localStorage.getItem("savedFilmsInputSearch");
-    console.log(inputData);
+    const checkbox = JSON.parse(localStorage.getItem("filmsTumbler"));
 
     async function handleGetMovies(inputSearch, tumbler) {
+
         setErrorText('');
         setPreloader(true);
 
@@ -29,10 +30,19 @@ const UserMovies = ({ openPopup }) => {
 
             let filterData = savedMovies.filter(({ nameRU }) => nameRU.toLowerCase().includes(inputSearch.toLowerCase()));
 
-            if (tumbler) filterData = filterData.filter(({ duration }) => duration <= 40);
+            localStorage.setItem('filmsInputSearch', inputSearch);
 
-            setFilmsShowed(filterData);
-            console.log(inputSearch.length);
+            let shortData = filterData.filter(({ duration }) => duration <= 40);
+            let filterDataShowed = savedMovies.filter(({ nameRU }) => nameRU.toLowerCase().includes(inputSearch.toLowerCase()));
+
+            const filterShort = filterDataShowed.filter(({ duration }) => duration <= 40);
+
+
+            if (checkbox) {
+                setFilmsShowed(shortData);
+            } else {
+                setFilmsShowed(filterData);
+            }
 
             if (inputSearch) {
                 localStorage.setItem('savedFilms', JSON.stringify(filterData));
@@ -74,6 +84,7 @@ const UserMovies = ({ openPopup }) => {
 
         setFilmsShowed(filterShowed);
         setFilms(filterDat);
+        localStorage.setItem('filmsTumbler', tumbler);
     }
 
 
@@ -85,8 +96,23 @@ const UserMovies = ({ openPopup }) => {
                 setFilmsSaved(newFilms);
                 localStorage.setItem('savedFilms', JSON.stringify(newFilms));
                 setFilms(newFilms);
-                if (inputData.length > 0) { setFilmsShowed(''); localStorage.removeItem('savedFilmsInputSearch'); }  // так не срабатывает, не пойму, как правильно
-                else { setFilmsShowed(newFilms) }
+                console.log(inputData.length);
+                if (inputData.length > 0) {
+                    if (checkbox) {
+                        const newMovie = newFilms.filter(({ duration }) => duration <= 40);
+                        const newMovies = newMovie.filter(({ nameRU }) => nameRU.toLowerCase().includes(inputSearch.toLowerCase()));
+                        setFilmsShowed(newMovies);
+                    }
+                    else {
+                        const newMovie = newFilms.filter(({ nameRU }) => nameRU.toLowerCase().includes(inputSearch.toLowerCase()));
+                        setFilmsShowed(newMovie);
+                    }
+                }
+
+                else {
+                    console.log(inputData.length);
+                    setFilmsShowed(newFilms);
+                }
             } catch (err) {
                 openPopup('Во время удаления фильма произошла ошибка.');
             }
@@ -104,9 +130,11 @@ const UserMovies = ({ openPopup }) => {
                 setFilms(userMovies);
                 setFilmsSaved(userMovies);
                 setFilmsShowed(userMovies);
+                localStorage.removeItem('savedFilmsInputSearch');
                 if (savedMovies.length === 0) {
                     setErrorText('Вы еще ничего не добавили в избранное');
                 }
+
             })
             .catch((err) => {
                 setErrorText((err));
@@ -115,7 +143,7 @@ const UserMovies = ({ openPopup }) => {
 
     return (
         <div className="usermovies">
-            <SearchForm handleGetMovies={handleGetMovies} filmsTumbler={filmsTumbler} filmsInputSearch={filmsInputSearch} handleGetMoviesTumbler={handleGetMoviesTumbler} />
+            <SearchFormUser handleGetMovies={handleGetMovies} filmsTumbler={filmsTumbler} filmsInputSearch={filmsInputSearch} handleGetMoviesTumbler={handleGetMoviesTumbler} />
             {preloader && <Preloader />}
             {errorText && <div className="usermovies__text-error">{errorText}</div>}
             {!preloader && !errorText && films !== null && (

@@ -1,48 +1,29 @@
 import './SearchForm.css';
 import { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
 
-const SearchForm = ({ handleGetMovies }) => {
+const SearchFormUser = ({ handleGetMovies, filmsTumbler, filmsInputSearch, handleGetMoviesTumbler }) => {
     const [inputSearch, setInputSearch] = useState('');
     const [tumbler, setTumbler] = useState(false);
-    const { pathname } = useLocation();
-    const [filmsTumbler, setFilmsTumbler] = useState(false);
-    const [filmsInputSearch, setFilmsInputSearch] = useState('');
-
 
     function handleInputChange(evt) {
         setInputSearch(evt.target.value);
     }
 
-    const handleTumblerChange = () => {
-        setTumbler(!tumbler);
-        handleGetMovies(inputSearch, !tumbler);
-        if (pathname === '/movies') {
-            localStorage.setItem('filmsTumbler', !tumbler);
-        }
+    function handleTumblerChange(evt) {
+        const newTumbler = !tumbler;
+        setTumbler(newTumbler);
+        handleGetMoviesTumbler(newTumbler);
     }
 
     function handleSubmit(evt) {
         evt.preventDefault();
-        if (pathname === '/movies') {
-            localStorage.setItem('filmsInputSearch', inputSearch);
-        }
-        handleGetMovies(inputSearch, tumbler);
+        handleGetMovies(inputSearch);
     }
 
-
     useEffect(() => {
-        if (pathname === '/movies') {
-            const inputData = localStorage.getItem('filmsInputSearch');
-            const checkbox = JSON.parse(localStorage.getItem('filmsTumbler'));
-            if (inputData) {
-                setInputSearch(inputData);
-            }
-            if (checkbox) {
-                setTumbler(checkbox);
-            }
-        }
-    }, []);
+        setTumbler(filmsTumbler);
+        setInputSearch(filmsInputSearch);
+    }, [filmsTumbler, filmsInputSearch]);
 
     return (
         <form className="search">
@@ -63,4 +44,4 @@ const SearchForm = ({ handleGetMovies }) => {
     );
 };
 
-export default SearchForm;
+export default SearchFormUser;

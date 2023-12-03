@@ -5,6 +5,8 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import Preloader from '../Preloader/Preloader';
 import moviesApi from '../../utils/MoviesApi';
 import api from '../../utils/Api';
+import searchFilter from '../../utils/filter';
+
 
 const Movies = ({ openPopup }) => {
     const [films, setFilms] = useState(null);
@@ -17,8 +19,6 @@ const Movies = ({ openPopup }) => {
     const [filmsShowed, setFilmsShowed] = useState(null);
     const [filmsWithTumbler, setFilmsWithTumbler] = useState([]);
     const [filmsShowedWithTumbler, setFilmsShowedWithTumbler] = useState([]);
-    const queryData = JSON.parse(localStorage.getItem("filmsTumbler"));
-    console.log(queryData);
 
     useEffect(() => {
         setstepCount(getstepCount());
@@ -35,11 +35,13 @@ const Movies = ({ openPopup }) => {
         let countCards;
         const clientWidth = document.documentElement.clientWidth;
         const stepCountConfig = {
-            '1279': [16, 4],
-            '994': [9, 3],
+            '1284': [12, 4],
+            '1004': [12, 3],
             '764': [8, 2],
+            '500': [8, 2],
             '240': [5, 2],
         };
+
 
         Object.keys(stepCountConfig)
             .sort((a, b) => a - b)
@@ -54,13 +56,12 @@ const Movies = ({ openPopup }) => {
 
     function handleMore() {
         const spliceFilms = films;
-        console.log(spliceFilms);
         const newFilmsShowed = filmsShowed.concat(spliceFilms.splice(0, stepCount[1]));
         setFilmsShowed(newFilmsShowed);
         setFilms(spliceFilms);
     }
 
-    async function handleGetMovies(inputSearch) {
+    async function handleGetMovies(inputSearch, tumbler) {
         setFilmsTumbler(false);
         localStorage.setItem('filmsTumbler', false);
 
@@ -75,15 +76,27 @@ const Movies = ({ openPopup }) => {
         try {
             const data = await moviesApi.getAllMovies();
             let filterData = data.filter(({ nameRU }) => nameRU.toLowerCase().includes(inputSearch.toLowerCase()));
+            let filterDataShowed = data.filter(({ nameRU }) => nameRU.toLowerCase().includes(inputSearch.toLowerCase()));
 
-            localStorage.setItem('films', JSON.stringify(filterData));
             localStorage.setItem('filmsInputSearch', inputSearch);
 
+            localStorage.setItem('films', JSON.stringify(filterData));
+
+            const filterShort = filterDataShowed.filter(({ duration }) => duration <= 40);
             const spliceData = filterData.splice(0, stepCount[0]);
-            setFilmsShowed(spliceData);
-            setFilms(filterData);
-            setFilmsShowedWithTumbler(spliceData);
-            setFilmsWithTumbler(filterData);
+            const tumblerData = filterShort.splice(0, stepCount[0]);
+            setFilms(tumblerData);
+
+            if (tumbler) {
+                setFilmsShowed(tumblerData);
+                setFilmsShowedWithTumbler(spliceData);
+                setFilmsWithTumbler(filterData);
+            } else {
+                setFilmsShowed(spliceData);
+                setFilmsShowedWithTumbler(spliceData);
+                setFilmsWithTumbler(filterData);
+            }
+
         } catch (err) {
             setErrorText(
                 'Во время запроса произошла ошибка. Возможно, проблема с соединением или сервер недоступен. Подождите немного и попробуйте ещё раз'
@@ -96,27 +109,6 @@ const Movies = ({ openPopup }) => {
         } finally {
             setPreloader(false);
         }
-    }
-
-
-    async function handleGetMoviesTumbler(tumbler) {
-        let filterDataShowed = [];
-        let filterData = [];
-
-        if (tumbler) {
-            setFilmsShowedWithTumbler(filmsShowed);
-            setFilmsWithTumbler(films);
-            filterDataShowed = filmsShowed.filter(({ duration }) => duration <= 40);
-            filterData = films.filter(({ duration }) => duration <= 40);
-        } else {
-            filterDataShowed = filmsShowedWithTumbler;
-            filterData = filmsWithTumbler;
-        }
-
-        localStorage.setItem('films', JSON.stringify(filterDataShowed.concat(filterData)));
-        localStorage.setItem('filmsTumbler', tumbler);
-        setFilmsShowed(filterDataShowed);
-        setFilms(filterData);
     }
 
     async function savedMoviesToggle(film, favorite) {
@@ -168,6 +160,7 @@ const Movies = ({ openPopup }) => {
 
         if (localStorageFilms) {
             const filterData = JSON.parse(localStorageFilms);
+            console.log(filterData);
             setFilmsShowed(filterData.splice(0, getstepCount()[0]));
             setFilms(filterData);
             setPreloader(false);
@@ -183,12 +176,13 @@ const Movies = ({ openPopup }) => {
         if (localStorageFilmsInputSearch) {
             setFilmsInputSearch(localStorageFilmsInputSearch);
         }
+
     }, [openPopup]);
 
     return (
         <main>
             <div className="movies">
-                <SearchForm handleGetMovies={handleGetMovies} filmsTumbler={filmsTumbler} filmsInputSearch={filmsInputSearch} handleGetMoviesTumbler={handleGetMoviesTumbler} />
+                <SearchForm handleGetMovies={handleGetMovies} filmsTumbler={filmsTumbler} filmsInputSearch={filmsInputSearch} />
                 {preloader && <Preloader />}
                 {errorText && <div className="movies__text-error">{errorText}</div>}
                 {!preloader && !errorText && films !== null && filmsSaved !== null && filmsShowed !== null && (
