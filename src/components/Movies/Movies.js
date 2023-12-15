@@ -87,6 +87,7 @@ const Movies = ({ openPopup }) => {
             localStorage.setItem('filmsInputSearch', inputSearch);
 
             const spliceData = filterData.splice(0, stepCount[0]);
+
             localStorage.setItem('movies', JSON.stringify(filterDataShowed));
 
             setFilms(filterData);

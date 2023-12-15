@@ -5,6 +5,7 @@ import MoviesCardList from '../MoviesCardList/MoviesCardList';
 import api from '../../utils/Api';
 import Preloader from '../Preloader/Preloader';
 import moviesApi from '../../utils/MoviesApi';
+import searchFilter from '../../utils/filter';
 
 const UserMovies = ({ openPopup }) => {
     const [films, setFilms] = useState([]);
@@ -17,7 +18,7 @@ const UserMovies = ({ openPopup }) => {
     const [inputSearch, setInputSearch] = useState('');
     const [filmsWithTumbler, setFilmsWithTumbler] = useState([]);
     const [filmsShowedWithTumbler, setFilmsShowedWithTumbler] = useState([]);
-    const inputData = localStorage.getItem("savedFilmsInputSearch");
+
     const checkbox = JSON.parse(localStorage.getItem("filmsTumbler"));
 
     async function handleGetMovies(inputSearch, tumbler) {
@@ -31,7 +32,7 @@ const UserMovies = ({ openPopup }) => {
 
             let filterData = savedMovies.filter(({ nameRU }) => nameRU.toLowerCase().includes(inputSearch.toLowerCase()));
 
-            localStorage.setItem('filmsInputSearch', inputSearch);
+            localStorage.setItem('inputSearch', inputSearch);
 
             let shortData = filterData.filter(({ duration }) => duration <= 40);
             let filterDataShowed = savedMovies.filter(({ nameRU }) => nameRU.toLowerCase().includes(inputSearch.toLowerCase()));
@@ -45,14 +46,16 @@ const UserMovies = ({ openPopup }) => {
                 setFilmsShowed(filterData);
             }
 
-            if (inputSearch) {
+            if (inputSearch.length > 0) {
                 localStorage.setItem('savedFilms', JSON.stringify(filterData));
+                localStorage.setItem('savedFilmsShowed', JSON.stringify(filterData));
                 localStorage.setItem('savedFilmsTumbler', tumbler);
-                localStorage.setItem('savedFilmsInputSearch', inputSearch);
+                localStorage.setItem('inputSearch', inputSearch);
             } else {
                 localStorage.removeItem('savedFilms');
+                localStorage.removeItem('savedFilmsShowed');
                 localStorage.removeItem('savedFilmsTumbler');
-                localStorage.removeItem('savedFilmsInputSearch');
+                localStorage.removeItem('inputSearch', inputSearch);
             }
 
         } catch (err) {
@@ -85,7 +88,7 @@ const UserMovies = ({ openPopup }) => {
 
         setFilmsShowed(filterShowed);
         setFilms(filterDat);
-        localStorage.setItem('filmsTumbler', tumbler);
+        localStorage.setItem('tumbler', tumbler);
     }
 
 
@@ -94,29 +97,17 @@ const UserMovies = ({ openPopup }) => {
             try {
                 await api.deleteMovie(film._id);
                 const newFilms = await api.getMovies();
-                setFilmsSaved(newFilms);
+                const newFilm = await api.getMovies();
                 localStorage.setItem('savedFilms', JSON.stringify(newFilms));
-                setFilms(newFilms);
-                console.log(inputData.length);
-                const newMovies = newFilms.filter(({ nameRU }) => nameRU.toLowerCase().includes(inputSearch.toLowerCase()));
+                const inputSearch = localStorage.getItem("inputSearch");
+                const tumbler = JSON.parse(localStorage.getItem("tumbler"));
+                console.log(tumbler);
+                console.log(inputSearch);
+                const newMovies = searchFilter(newFilm, inputSearch, tumbler);
+
                 setFilmsShowed(newMovies);
 
-                if (inputData.length > 0) {
-                    if (checkbox) {
-                        const newMovie = newFilms.filter(({ duration }) => duration <= 40);
-                        const newMovies = newMovie.filter(({ nameRU }) => nameRU.toLowerCase().includes(inputSearch.toLowerCase()));
-                        setFilmsShowed(newMovies);
-                    }
-                    else {
-                        const newFilter = newFilms.filter(({ nameRU }) => nameRU.toLowerCase().includes(inputSearch.toLowerCase()));
-                        setFilmsShowed(newFilter);
-                    }
-                }
 
-                else {
-                    console.log(inputData.length);
-                    setFilmsShowed(newFilms);
-                }
             } catch (err) {
                 openPopup('Во время удаления фильма произошла ошибка.');
             }
@@ -131,10 +122,11 @@ const UserMovies = ({ openPopup }) => {
                 const userMovies = savedMovies// из всех фильмов выбираем с подходщим id и сохраняем в переменную
                 console.log(userMovies);
                 localStorage.setItem('savedFilms', JSON.stringify(userMovies)); // сохраняем их в хранилище
+
                 setFilms(userMovies);
                 setFilmsSaved(userMovies);
                 setFilmsShowed(userMovies);
-                localStorage.removeItem('savedFilmsInputSearch');
+                localStorage.removeItem('inputSearch');
                 if (savedMovies.length === 0) {
                     setErrorText('Вы еще ничего не добавили в избранное');
                 }
