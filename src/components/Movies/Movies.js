@@ -37,11 +37,11 @@ const Movies = ({ openPopup }) => {
         const clientWidth = document.documentElement.clientWidth;
         const stepCountConfig = {
             '1278': [16, 4],
-            '1262': [16, 4],
+            '1259': [16, 4],
             '1004': [12, 3],
-            '989': [12, 3],
+            '974': [12, 3],
             '767': [8, 2],
-            '748': [8, 2],
+            '750': [8, 2],
             '240': [5, 2],
         };
 
